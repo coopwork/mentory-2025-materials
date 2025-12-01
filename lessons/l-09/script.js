@@ -97,3 +97,88 @@ const predictions = [
   "Ты станешь разработчиком, которым будешь гордиться.",
   "Ты обязательно справишься — и даже лучше, чем ожидаешь."
 ];
+
+
+const getPredictionButton = document.querySelector('.get__prediction');
+const predictionTextWrap = document.querySelector('.prediction__text__wrapper');
+
+// function getPrediction() {
+// const predictionText = document.querySelector('.prediction__text');
+//   const randomIndex = Math.trunc(Math.random() * predictions.length);
+
+//   predictionText.textContent = predictions[randomIndex];
+// }
+
+// console.log(getPredictionButton.className = 'dwadwadwa');
+// console.log(getPredictionButton.classList.remove('test__class'));
+// console.log(getPredictionButton.setAttribute('data-prediction', 'my prediction'));
+// console.log(getPredictionButton.getAttribute('data-prediction'));
+// console.log(getPredictionButton.removeAttribute('disabled'));
+// console.log(getPredictionButton.classList);
+
+
+function getRandomPrediction() {
+  const randomIndex = Math.trunc(Math.random() * predictions.length);
+  return predictions[randomIndex]
+}
+
+function createElement(tag, className, text) {
+  const element = document.createElement(tag);
+  element.classList.add(className);
+  element.textContent = text;
+
+  return element
+}
+
+function getPrediction() {
+  const p = createElement('p', 'prediction__text', getRandomPrediction());
+
+  // predictionTextWrap.innerHTML = '';
+
+  // #2
+  const uselessParagraph = predictionTextWrap.querySelector('p');
+  if (uselessParagraph) {
+    uselessParagraph.remove();
+  }
+
+  // #3
+  // const uselessParagraphs = predictionTextWrap.querySelectorAll('p');
+  // uselessParagraphs.forEach((paragraph) => {
+  //   paragraph.remove();
+  // });
+
+  predictionTextWrap.append(p);
+
+  // #1 способ (Не безопасный)
+  // predictionTextWrap.innerHTML = `
+  //   <p class="prediction__text">${predictions[randomIndex]}</p>
+  // `;
+}
+
+getPredictionButton.addEventListener('click', getPrediction);
+
+
+
+// const btn = document.getElementById('get__prediction');
+// const btn2 = document.getElementsByClassName('get__prediction');
+
+// const btn3 = document.querySelector('.get__prediction')
+// const btn4 = document.querySelectorAll('.get__prediction')
+
+// console.log(btn);
+// console.log(btn2);
+
+// console.log(btn3);
+// console.log(btn4);
+
+
+function myFunc() {
+  console.log('fn 1');
+}
+
+const myFunc2 = () => {
+  console.log('fn 2');
+}
+
+
+// console.log(window);
