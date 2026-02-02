@@ -1,20 +1,14 @@
 import './App.css'
 import LikesBlock from "./components/likes-block.tsx";
-import Accordion from "./components/accordion.tsx";
+import FeedbackForm from "./components/feedback-form.tsx";
 
 
 function App() {
 
   return (
     <div>
-			<h1>
-      	Work!
-			</h1>
-
-			<Accordion/>
-
 			<LikesBlock/>
-			<LikesBlock/>
+			<FeedbackForm/>
     </div>
   )
 }
