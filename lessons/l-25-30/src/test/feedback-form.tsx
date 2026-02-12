@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 type TestimonialType = {
@@ -11,6 +11,7 @@ const FeedbackForm = () => {
 	const [name, setName] = useState('');
 	const [feedback, setFeedback] = useState('');
 	const [testimonials, setTestimonials] = useState<TestimonialType[]>([]);
+	const [count, setCount] = useState(10);
 
 	const addTestimonial = () => {
 		setTestimonials(prevState => [...prevState, {
@@ -22,9 +23,27 @@ const FeedbackForm = () => {
 		setFeedback('');
 	};
 
+	useEffect(()=>{
+		// setCount(10);
+		console.log('Mount FEEDBACK FORM')
+
+		const timer = setInterval(() => {
+			setCount(prevState => prevState - 1);
+			console.log('Счетчик обрабатывается')
+		}, 1000);
+
+		return () => {
+			clearInterval(timer);
+			console.log('Unmount FEEDBACK FORM')
+		}
+	}, [feedback]);
+
 	return (
 			<div>
 				<h3>Оставьте отзыв</h3>
+				<div>
+					<p>Осталось времени: {count} сек.</p>
+				</div>
 				<div>
 					<div>
 					<input

@@ -1,4 +1,4 @@
-import Button from "./button.tsx";
+import Button from "../components/button.tsx";
 import {useState} from "react";
 
 
@@ -23,7 +23,7 @@ const LikesBlock = () => {
 		}));
 	};
 
-	console.log(stats)
+	// console.log(stats)
 	return (
 			<div>
 				<h3>
