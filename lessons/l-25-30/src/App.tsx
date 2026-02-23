@@ -12,6 +12,7 @@ import Button from "./components/button.tsx";
 import TodoList, {type TodoType} from "./test/todo-list.tsx";
 import Input from "./components/input.tsx";
 import OptimizationTest from "./test/optimization-test.tsx";
+import LikesBlockReducer from "./test/likes-block-reducer.tsx";
 
 
 
@@ -71,6 +72,8 @@ function App() {
 					<div>
 						<TestRef/>
 						<div style={spinnerStyles}/>
+
+						<LikesBlockReducer/>
 
 						<OptimizationTest/>
 
