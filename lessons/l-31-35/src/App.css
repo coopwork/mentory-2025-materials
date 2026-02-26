@@ -76,25 +76,6 @@
 .add_todo_form {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: .5rem;
-
-  & input {
-    width: 100%;
-    padding: .5rem;
-    border: 1px solid #ccc;
-    border-radius: .5rem;
-  }
-
-  & button {
-    padding: .5rem;
-    border: 1px solid #ccc;
-    border-radius: .5rem;
-    cursor: pointer;
-  }
-}
-
-@keyframes skeleton {
-  to {
-    opacity: .25;
-  }
 }

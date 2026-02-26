@@ -1,5 +1,11 @@
 import type {TodoType} from "../types/todo.ts";
+import * as React from "react";
 import {useState} from "react";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import type {TransitionProps} from "@mui/material/transitions";
+import SaveIcon from "@mui/icons-material/Save";
 
 
 type TodoCardProps = {
@@ -8,6 +14,16 @@ type TodoCardProps = {
 	updateTodoTitle: (id: number, title: string) => Promise<void>
 	handleDeleteTodo: (id: number) => Promise<void>
 }
+
+
+const Transition = React.forwardRef(function Transition(
+		props: TransitionProps & {
+			children: React.ReactElement<any, any>;
+		},
+		ref: React.Ref<unknown>,
+) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const TodoCard = ({todo, toggleTodo, updateTodoTitle, handleDeleteTodo}: TodoCardProps) => {
 	const [title, setTitle] = useState(todo.title);
@@ -46,21 +62,41 @@ const TodoCard = ({todo, toggleTodo, updateTodoTitle, handleDeleteTodo}: TodoCar
 				<h2 className='todo__title'>
 					<div className='todo__title__wrapper'>
 						<div className='todo__title__actions'>
-							<button
-									className='edit__title_btn'
-									onClick={handleToggleEditTitle}
-									disabled={isDeleting}
-							>
-								{isTitleEdit ? 'Сохранить' : 'Редактировать'}
-							</button>
-							<button
-									disabled={isDeleting}
-									className='edit__title_btn'
-									onClick={deleteTodo}
-							>
-								{isDeleting ? 'Удаляем...' : 'Удалить'}
-							</button>
+							<Button size='small' onClick={handleToggleEditTitle} loading={isDeleting}>
+								<EditIcon fontSize='small'/>
+							</Button>
+							<Button size='small' color='error' onClick={deleteTodo} loading={isDeleting}>
+								<DeleteIcon fontSize='small'/>
+							</Button>
 						</div>
+						<Dialog
+								open={isTitleEdit}
+								slots={{
+									transition: Transition,
+								}}
+								keepMounted
+								onClose={handleToggleEditTitle}
+								aria-describedby="alert-dialog-slide-description"
+						>
+							<DialogTitle>Редактирование TODO карточки</DialogTitle>
+							<DialogContent>
+								<TextField
+										fullWidth
+										label="Название Todo"
+										variant="outlined"
+										value={title}
+										onChange={(e) => setTitle(e.target.value)}
+								/>
+							</DialogContent>
+							<DialogActions>
+								<Button
+										onClick={handleToggleEditTitle}
+										startIcon={<SaveIcon/>}
+								>
+									Сохранить
+								</Button>
+							</DialogActions>
+						</Dialog>
 						<label
 								htmlFor={`todo-${todo.id}`}
 								style={{
@@ -68,18 +104,9 @@ const TodoCard = ({todo, toggleTodo, updateTodoTitle, handleDeleteTodo}: TodoCar
 								}}
 						>
 						<span>
-
-							{isTitleEdit ? (
-									<input
-											type="text"
-											value={title}
-											onChange={(e) => setTitle(e.target.value)}
-									/>
-							) : (
 									<>
 										{todo.title} {isUpdating ? '...' : ''}
 									</>
-							)}
 						</span>
 						</label>
 					</div>

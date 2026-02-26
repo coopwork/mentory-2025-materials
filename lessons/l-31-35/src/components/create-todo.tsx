@@ -1,5 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
+import {Button, Skeleton, TextField} from "@mui/material";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 type CreateTodoProps = {
 	onCreateTodo: (title: string) => Promise<void>
@@ -21,20 +23,29 @@ const CreateTodo = ({onCreateTodo}: CreateTodoProps) => {
 	return (
 			<div>
 				<form className='add_todo_form' onSubmit={handleSubmit}>
-					<input
+					<TextField
+							fullWidth
 							disabled={isPending}
-							type="text"
-							placeholder="Название Todo"
+							id="standard-basic"
+							label="Название Todo"
+							variant="standard"
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
 					/>
-					<button disabled={isPending}>
+					<Button
+							type='submit'
+							color="primary"
+							loading={isPending}
+							loadingPosition="start"
+							startIcon={<AddCircleIcon/>}
+							variant="outlined"
+					>
 						Добавить Todo
-					</button>
+					</Button>
 				</form>
 
 				{isPending && (
-						<div className='skeleton__todo_card'/>
+						<Skeleton variant="rounded" width={'100%'} height={75}/>
 				)}
 			</div>
 	);
