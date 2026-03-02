@@ -69,40 +69,42 @@ const TodoPage = () => {
 	}, [qParams.page, qParams.limit]);
 
 	return (
-			<div className='todo__list'>
-				<h1>Todo List</h1>
-				<CreateTodo onCreateTodo={handleCreateTodo}/>
-				{isPendingTodos ? (
-						[...Array(qParams.limit)].map((_, i) => (
-								<Skeleton key={i} variant="rounded" width={'100%'} height={75}/>
-						))
-				) : (
-						todos.map((todo) => (
-								<TodoCard
-										key={todo.id}
-										todo={todo}
-										toggleTodo={toggleTodo}
-										updateTodoTitle={updateTodoTitle}
-										handleDeleteTodo={handleDeleteTodo}
-								/>
-						))
-				)}
-				<Pagination
-						onChange={(_, page) =>
-								handlePageChange(page)}
-						count={qParams.total / qParams.limit}
-				/>
-				<Select
-						value={qParams.limit}
-						label="Лимит"
-						onChange={(e) => handleLimitChange(e.target.value)}
-				>
-					{
-						[5, 10, 25, 50].map((limit) => (
-								<MenuItem key={limit} value={limit}>{limit}</MenuItem>
-						))
-					}
-				</Select>
+			<div className='container'>
+				<div className='todo__list'>
+					<h1>Todo List</h1>
+					<CreateTodo onCreateTodo={handleCreateTodo}/>
+					{isPendingTodos ? (
+							[...Array(qParams.limit)].map((_, i) => (
+									<Skeleton key={i} variant="rounded" width={'100%'} height={75}/>
+							))
+					) : (
+							todos.map((todo) => (
+									<TodoCard
+											key={todo.id}
+											todo={todo}
+											toggleTodo={toggleTodo}
+											updateTodoTitle={updateTodoTitle}
+											handleDeleteTodo={handleDeleteTodo}
+									/>
+							))
+					)}
+					<Pagination
+							onChange={(_, page) =>
+									handlePageChange(page)}
+							count={qParams.total / qParams.limit}
+					/>
+					<Select
+							value={qParams.limit}
+							label="Лимит"
+							onChange={(e) => handleLimitChange(e.target.value)}
+					>
+						{
+							[5, 10, 25, 50].map((limit) => (
+									<MenuItem key={limit} value={limit}>{limit}</MenuItem>
+							))
+						}
+					</Select>
+				</div>
 			</div>
 	);
 };
