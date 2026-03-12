@@ -1,12 +1,19 @@
 import {PAGES} from "./pages.ts";
 import {Route, Routes} from "react-router";
 import {Suspense} from "react";
+import type {UserRoleType} from "./types/user.ts";
+import {useUserStore} from "./store/user/hooks.ts";
 
 
 const AppRouter = () => {
+	const {user} = useUserStore();
+
+	const userRole: UserRoleType = user?.role ?? 'unauthorized';
+
+	const ROUTES = [...PAGES.common, ...PAGES[userRole]]
 	return (
 			<Routes>
-				{PAGES.map((page) => (
+				{ROUTES.map((page) => (
 						<Route
 								key={page.path}
 								path={page.path}
