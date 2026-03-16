@@ -4,6 +4,7 @@ export type UserType = {
 	id: number;
 	name: string;
 	email: string;
+	avatar: string;
 	role: UserRoleType;
 }
 
@@ -12,6 +13,7 @@ export type UserContextType = {
 	sign_in: (data: SignInFormValuesType) => Promise<void>;
 	sign_up: (data: SignUpFormValuesType) => Promise<void>;
 	sign_out: () => void;
+	update_user: (data: UpdateUserProfileValuesType) => void;
 }
 
 export type SignInFormValuesType = {
@@ -23,4 +25,9 @@ export type SignUpFormValuesType = {
 	email: string;
 	password: string;
 	name: string;
+}
+
+export type UpdateUserProfileValuesType = {
+	name?: string;
+	avatar?: string;
 }

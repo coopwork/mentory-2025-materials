@@ -13,8 +13,12 @@ const TodoPage = lazy(async () => import("./pages/todo-page.tsx"));
 const PostsPage = lazy(async () => import("./pages/posts-page.tsx"));
 const PostDetailsPage = lazy(async () => import("./pages/post-details-page.tsx"));
 
+const ProfilePage = lazy(async () => import("./pages/profile-page.tsx"));
+
 const SignInPage = lazy(async () => import("./pages/sign-in-page.tsx"));
 const SignUpPage = lazy(async () => import("./pages/sign-up-page.tsx"));
+
+const DashboardPage = lazy(async () => import("./pages/admin/dashboard.tsx"));
 
 const COMMON_PAGES = [
 	{
@@ -51,10 +55,18 @@ const USER_PAGES = [
 		path: '/posts/:postId',
 		element: PostDetailsPage,
 	},
+	{
+		path: '/profile',
+		element: ProfilePage
+	}
 ] as const;
 
 const ADMIN_PAGES = [
-	...USER_PAGES
+	...USER_PAGES,
+	{
+		path: '/admin/dashboard',
+		element: DashboardPage,
+	},
 ] as const;
 
 

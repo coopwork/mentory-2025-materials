@@ -1,9 +1,9 @@
 import {NavLink} from "react-router";
 import {useUserStore} from "../store/user/hooks.ts";
-import {Button} from "@mui/material";
+import UserAvatar from "./user-avatar.tsx";
 
 const MainHeader = () => {
-	const {user, sign_out} = useUserStore()
+	const {user} = useUserStore()
 	return (
 			<header className='main_header'>
 				<div className='container main_header_wrapper'>
@@ -14,12 +14,13 @@ const MainHeader = () => {
 								<>
 									<NavLink to="/todos">Дела</NavLink>
 									<NavLink to="/posts">Посты</NavLink>
-									<Button onClick={sign_out} color='error' variant='contained'>Выйти</Button>
 								</>
 						)}
 						{!user && (
 								<NavLink to="/sign-in">Войти</NavLink>
 						)}
+
+						<UserAvatar/>
 					</nav>
 				</div>
 			</header>

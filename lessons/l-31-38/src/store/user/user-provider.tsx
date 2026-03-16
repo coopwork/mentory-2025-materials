@@ -1,6 +1,6 @@
 import {UserContext} from "./user-context.ts";
 import {type ReactNode, useLayoutEffect, useState} from "react";
-import type {SignInFormValuesType, SignUpFormValuesType, UserContextType, UserType} from "../../types/user.ts";
+import type {SignInFormValuesType, SignUpFormValuesType, UpdateUserProfileValuesType, UserContextType, UserType} from "../../types/user.ts";
 import {signIn} from "../../utils/api/requests/sign-in.ts";
 import {useNavigate} from "react-router";
 import {signUp} from "../../utils/api/requests/sign-up.ts";
@@ -37,6 +37,18 @@ const UserProvider = ({children}: { children: ReactNode }) => {
 		navigate('/sign-in');
 		localStorage.removeItem('user')
 	}
+	const update_user = async (data: UpdateUserProfileValuesType) => {
+		setUser(prev => {
+			if (prev) {
+				const updatedUser = {
+					...prev,
+					...data,
+				}
+				localStorage.setItem('user', JSON.stringify(updatedUser))
+				return updatedUser
+			}
+		});
+	}
 
 	useLayoutEffect(() => {
 		getMe().then(setUser);
@@ -47,6 +59,7 @@ const UserProvider = ({children}: { children: ReactNode }) => {
 		sign_in,
 		sign_up,
 		sign_out,
+		update_user,
 	}
 	return (
 			<UserContext.Provider value={VALUES}>
