@@ -1,15 +1,8 @@
-import type {ReactNode} from "react";
+import { BrowserRouter } from 'react-router';
+import type { WrapperPropsType } from '@/shared/types/base-types.ts';
 
-type PropsType = {
-	children: ReactNode;
-};
-
-const AppProviders = ({children}:PropsType) => {
-	return (
-
-				children
-
-	);
+const AppProviders = ({ children }: WrapperPropsType) => {
+	return <BrowserRouter>{children}</BrowserRouter>;
 };
 
 export default AppProviders;

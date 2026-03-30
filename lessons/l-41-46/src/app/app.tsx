@@ -1,12 +1,8 @@
-import '@/shared/styles/app.css'
-import AppRouter from "./app-router.tsx";
-
+import '@/shared/styles/app.css';
+import AppRouter from './app-router.tsx';
 
 function App() {
-
-  return (
-    <AppRouter/>
-  )
+	return <AppRouter />;
 }
 
-export default App
+export default App;
