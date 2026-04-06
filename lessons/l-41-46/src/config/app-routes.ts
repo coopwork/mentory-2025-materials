@@ -12,19 +12,6 @@ const OrderPage = lazy(() => import('@/pages/user/order.tsx'));
 const ProductsPage = lazy(() => import('@/pages/products.tsx'));
 const ProductDetailsPage = lazy(() => import('@/pages/product-details.tsx'));
 
-const AUTH = [
-	{
-		path: PATHS.SIGN_IN,
-		element: SignInPage,
-		layout: AuthLayout,
-	},
-	{
-		path: PATHS.SING_UP,
-		element: SignUpPage,
-		layout: AuthLayout,
-	},
-] as const;
-
 const COMMON = [
 	{
 		path: PATHS.HOME,
@@ -40,6 +27,20 @@ const COMMON = [
 		path: PATHS.PRODUCT_BY_ID(':productId'),
 		element: ProductDetailsPage,
 		layout: CommonLayout,
+	},
+] as const;
+
+const UNKNOWN = [
+	...COMMON,
+	{
+		path: PATHS.SIGN_IN,
+		element: SignInPage,
+		layout: AuthLayout,
+	},
+	{
+		path: PATHS.SING_UP,
+		element: SignUpPage,
+		layout: AuthLayout,
 	},
 ] as const;
 
@@ -62,8 +63,7 @@ const ADMIN = [
 ] as const;
 
 export const ROUTES = {
-	AUTH,
-	COMMON,
+	UNKNOWN,
 	USER,
 	ADMIN,
 } as const;

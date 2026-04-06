@@ -6,11 +6,6 @@ const HEADER = [
 		href: PATHS.PRODUCTS,
 		description: 'Полный список товаров',
 	},
-	{
-		title: 'Смартфоны',
-		href: '/docs/primitives/hover-card',
-		description: 'Все смартфоны',
-	},
 ] as const;
 
 export const NAVIGATION = {

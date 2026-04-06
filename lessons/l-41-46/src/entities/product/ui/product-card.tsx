@@ -12,14 +12,22 @@ import { PATHS } from '@/config/paths.ts';
 import { Button } from '@/shared/ui/button.tsx';
 import { ShoppingCartIcon } from 'lucide-react';
 import type { ProductType } from '@/entities/product/model/types.ts';
+import { ENV } from '@/config/environments.ts';
+import NO_IMAGE from '@/shared/assets/images/No_Product_Image_Available.webp';
 
 const ProductCard = ({ product }: { product: ProductType }) => {
+	const product_image = product.image
+		? typeof product.image === 'string'
+			? `${ENV.CORE_API_URL}${product.image}`
+			: `${ENV.CORE_API_URL}${product.image[0]}`
+		: NO_IMAGE;
+
 	return (
 		<Card className='relative mx-auto w-full max-w-sm pt-0 justify-between'>
 			<div className='absolute inset-0 z-30 aspect-video bg-linear-to-t from-black/25 to-transparent' />
 			<img
-				src='http://localhost:3001/uploads/products/1774878074594-409650318.png'
-				alt='Event cover'
+				src={product_image}
+				alt={product.name}
 				className='relative z-20 aspect-video w-full object-cover'
 			/>
 			<CardHeader>

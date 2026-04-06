@@ -13,8 +13,10 @@ import { Link } from 'react-router';
 import NavigationListItem from '@/widgets/header/items/navigation-list-item.tsx';
 import { NAVIGATION } from '@/config/navigation.ts';
 import { PATHS } from '@/config/paths.ts';
+import { useGetCategoriesQuery } from '@/entities/categories/model/use-get-categories-query.ts';
 
 const Header = () => {
+	const categories = useGetCategoriesQuery();
 	return (
 		<header className='fixed top-0 left-0 right-0 py-4 border-b border-border rounded-b-2xl bg-card'>
 			<Container className='flex items-center justify-between'>
@@ -41,6 +43,15 @@ const Header = () => {
 											href={component.href}
 										>
 											{component.description}
+										</NavigationListItem>
+									))}
+									{categories?.data?.map((category) => (
+										<NavigationListItem
+											key={category.id}
+											title={category.label}
+											href={PATHS.PRODUCTS + `?category=${category.name}`}
+										>
+											Все {category.label}
 										</NavigationListItem>
 									))}
 								</ul>

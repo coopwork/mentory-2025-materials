@@ -1,12 +1,16 @@
 import { useSearchParams } from 'react-router';
+import { useDebounceValue } from '@/shared/hooks';
+import { useEffect, useState } from 'react';
+import type { FilterType } from '@/features/filter-products/model/types.ts';
 
 export const useProductFilters = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const searchQuery = {
+	const searchQuery: FilterType = {
 		search: searchParams.get('search') ?? undefined,
-		_category: searchParams.get('_category') ?? undefined,
+		category: searchParams.get('category') ?? undefined,
 		_sort: searchParams.get('_sort') ?? undefined,
+		_order: searchParams.get('_order') ?? undefined,
 		price_gte: searchParams.get('price_gte')
 			? Number(searchParams.get('price_gte'))
 			: undefined,
@@ -15,14 +19,18 @@ export const useProductFilters = () => {
 			: undefined,
 	};
 
-	const setSearchQuery = (
-		updateSearchQuery: Partial<
-			Record<keyof typeof searchQuery, string | number | null>
-		>,
-	) => {
+	const [filters, setFilters] = useState<FilterType>(searchQuery);
+
+	const debouncedFilters = useDebounceValue(filters, 750);
+
+	const setFiltersQuery = (updateSearchQuery: Partial<FilterType>) => {
+		setFilters((prev) => ({ ...prev, ...updateSearchQuery }));
+	};
+
+	useEffect(() => {
 		setSearchParams((prev) => {
 			const params = new URLSearchParams(prev);
-			Object.entries(updateSearchQuery).forEach(([key, value]) => {
+			Object.entries(debouncedFilters).forEach(([key, value]) => {
 				if (value) {
 					params.set(key, String(value));
 				} else {
@@ -31,7 +39,7 @@ export const useProductFilters = () => {
 			});
 			return params.toString();
 		});
-	};
+	}, [debouncedFilters]);
 
-	return { searchQuery, setSearchQuery };
+	return { searchQuery, filters, setFiltersQuery };
 };

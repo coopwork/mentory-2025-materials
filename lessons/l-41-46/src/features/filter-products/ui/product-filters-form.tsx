@@ -12,10 +12,12 @@ import {
 import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
 import { Slider } from '@/shared/ui/slider.tsx';
 import { useProductFilters } from '@/features/filter-products/model/use-product-filters.ts';
+import { useGetCategoriesQuery } from '@/entities/categories/model/use-get-categories-query.ts';
 
 const ProductFiltersForm = () => {
-	const { searchQuery, setSearchQuery } = useProductFilters();
-	console.log('searchQuery', searchQuery);
+	const { filters, setFiltersQuery } = useProductFilters();
+	const categories = useGetCategoriesQuery();
+
 	return (
 		<section className='mb-10 flex flex-col gap-4'>
 			<form className='flex items-center'>
@@ -23,47 +25,82 @@ const ProductFiltersForm = () => {
 					required
 					placeholder='Поиск...'
 					className='rounded-e-none'
-					value={searchQuery.search ?? ''}
-					onChange={(e) => setSearchQuery({ search: e.target.value })}
+					value={filters.search ?? ''}
+					onChange={(e) => setFiltersQuery({ search: e.target.value })}
 				/>
 				<Button className='rounded-s-none'>Найти</Button>
 			</form>
 
 			<div className='grid grid-cols-3 gap-4'>
 				<div className='grid w-full max-w-xs gap-2'>
-					<Label htmlFor='slider-demo-temperature'>Категория</Label>
-					<Select>
-						<SelectTrigger className='max-w-[180px]'>
+					<Label htmlFor='category'>Категория</Label>
+					<Select
+						disabled={categories.isPending}
+						value={filters.category ?? 'undefined'}
+						onValueChange={(value) =>
+							setFiltersQuery({
+								category: value !== 'undefined' ? value : undefined,
+							})
+						}
+					>
+						<SelectTrigger
+							id='category'
+							className='max-w-[180px]'
+						>
 							<SelectValue placeholder='Категория' />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
-								<SelectItem value='Все категории'>Все категории</SelectItem>
-								<SelectItem value='Смартфоны'>Смартфоны</SelectItem>
-								<SelectItem value='Планшеты'>Планшеты</SelectItem>
+								<SelectItem value={'undefined'}>Все категории</SelectItem>
+								{categories?.data?.map((category) => (
+									<SelectItem
+										key={category.id}
+										value={category.name}
+									>
+										{category.label}
+									</SelectItem>
+								))}
 							</SelectGroup>
 						</SelectContent>
 					</Select>
 				</div>
 
 				<div className='grid w-full max-w-xs gap-2'>
-					<Label htmlFor='slider-demo-temperature'>Сортировка</Label>
-					<Select>
-						<SelectTrigger className='max-w-[180px]'>
+					<Label htmlFor='sort'>Сортировка</Label>
+					<Select
+						value={
+							filters._sort && filters._order
+								? `${filters._sort}___${filters._order}`
+								: 'undefined'
+						}
+						onValueChange={(value) => {
+							const [_sort, _order] = value.split('___');
+							setFiltersQuery({
+								_sort: _sort !== 'undefined' ? _sort : undefined,
+								_order: _order !== 'undefined' ? _order : undefined,
+							});
+						}}
+					>
+						<SelectTrigger
+							id='sort'
+							className='max-w-[180px]'
+						>
 							<SelectValue placeholder='Сортировать' />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
-								<SelectItem value='Все категории'>
-									<ArrowUpIcon /> По алфавиту
+								<SelectItem value='undefined'>По умолчанию</SelectItem>
+								<SelectItem value='name___asc'>
+									<ArrowUpIcon /> По названию
 								</SelectItem>
-								<SelectItem value='Все категории'>
-									<ArrowDownIcon /> По алфавиту
+								<SelectItem value='name___desc'>
+									<ArrowDownIcon />
+									По названию
 								</SelectItem>
-								<SelectItem value='Смартфоны'>
+								<SelectItem value='price___asc'>
 									<ArrowUpIcon /> По цене
 								</SelectItem>
-								<SelectItem value='Планшеты'>
+								<SelectItem value='price___desc'>
 									<ArrowDownIcon /> По цене
 								</SelectItem>
 							</SelectGroup>
@@ -76,21 +113,16 @@ const ProductFiltersForm = () => {
 						<Label htmlFor='prices'>Цена</Label>
 						<span className='text-sm text-muted-foreground'>
 							от{' '}
-							{[
-								searchQuery.price_gte ?? 1,
-								searchQuery.price_lte ?? 100000,
-							].join(' до ')}
+							{[filters.price_gte ?? 1, filters.price_lte ?? 100000].join(
+								' до ',
+							)}
 						</span>
 					</div>
 					<Slider
 						id='prices'
-						value={[
-							searchQuery.price_gte ?? 1,
-							searchQuery.price_lte ?? 100000,
-						]}
+						value={[filters.price_gte ?? 1, filters.price_lte ?? 100000]}
 						onValueChange={(values) => {
-							console.log(values);
-							setSearchQuery({
+							setFiltersQuery({
 								price_gte: values[0],
 								price_lte: values[1],
 							});
