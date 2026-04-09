@@ -4,16 +4,15 @@ import {
 	NavigationMenu,
 	NavigationMenuContent,
 	NavigationMenuItem,
-	NavigationMenuLink,
 	NavigationMenuList,
 	NavigationMenuTrigger,
-	navigationMenuTriggerStyle,
 } from '@/shared/ui/navigation-menu.tsx';
 import { Link } from 'react-router';
 import NavigationListItem from '@/widgets/header/items/navigation-list-item.tsx';
 import { NAVIGATION } from '@/config/navigation.ts';
 import { PATHS } from '@/config/paths.ts';
 import { useGetCategoriesQuery } from '@/entities/categories/model/use-get-categories-query.ts';
+import UserNavigation from '@/widgets/header/items/user-navigation.tsx';
 
 const Header = () => {
 	const categories = useGetCategoriesQuery();
@@ -57,14 +56,7 @@ const Header = () => {
 								</ul>
 							</NavigationMenuContent>
 						</NavigationMenuItem>
-						<NavigationMenuItem>
-							<NavigationMenuLink
-								asChild
-								className={navigationMenuTriggerStyle()}
-							>
-								<Link to={PATHS.SIGN_IN}>Войти</Link>
-							</NavigationMenuLink>
-						</NavigationMenuItem>
+						<UserNavigation />
 					</NavigationMenuList>
 				</NavigationMenu>
 			</Container>

@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router';
 import { ROUTES } from '@/config/app-routes.ts';
 import { Suspense } from 'react';
-import { useUser } from '@/entities/user/model/use-user.ts';
+import { useUser } from '@/entities/user/model/hooks.ts';
 
 const AppRouter = () => {
 	const { user } = useUser();

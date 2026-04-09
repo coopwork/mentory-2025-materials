@@ -1,7 +1,9 @@
+import type { UseMutationResult } from '@tanstack/react-query';
+
 export type UserRoleType = 'admin' | 'user';
 
 export type UserType = {
-	id: number;
+	readonly id: number;
 	email: string;
 	name: string;
 	role: UserRoleType;
@@ -13,18 +15,23 @@ export type UserResponseType = {
 	user: UserType;
 };
 
+export type SignInArgsType = {
+	email: string;
+	password: string;
+};
+
+export type SignUpArgsType = SignInArgsType & {
+	name: string;
+};
+
 export type UserContextType = {
 	user: UserType | null;
-	dispatch: (action: UserReducerType) => void;
+	isPending: boolean;
+	sign_in: UseMutationResult<UserResponseType, Error, SignInArgsType, unknown>;
+	sign_up: UseMutationResult<UserResponseType, Error, SignUpArgsType, unknown>;
+	sign_out: () => void;
 };
 
-export type UserReducerActionsType =
-	| 'editUser'
-	| 'sign_in'
-	| 'sign_up'
-	| 'sign_out';
-
-export type UserReducerType = {
-	type: UserReducerActionsType;
-	payload: UserType | null;
-};
+export type UserReducerType =
+	| { type: 'SET'; payload: UserType | null }
+	| { type: 'EDIT'; payload: Partial<UserType> };

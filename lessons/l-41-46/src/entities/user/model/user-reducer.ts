@@ -1,36 +1,22 @@
 import type { UserReducerType, UserType } from '@/entities/user/model/types.ts';
 
-export const userReducer = async (
+export const userReducer = (
 	state: UserType | null,
 	action: UserReducerType,
 ) => {
 	switch (action.type) {
-		case 'editUser':
+		case 'EDIT':
+			if (!state) return state;
 			return {
 				...state,
 				...action.payload,
 			};
-		case 'sign_in': {
-			return {
-				...state,
-				...action.payload,
-			};
+		case 'SET': {
+			if (!action.payload) return null;
+			return action.payload;
 		}
-		case 'sign_up': {
-			return {
-				...state,
-				...action.payload,
-			};
-		}
-		case 'sign_out': {
-			return {
-				...state,
-				...action.payload,
-			};
-		}
+
 		default:
 			return state;
 	}
-
-	return state;
 };
